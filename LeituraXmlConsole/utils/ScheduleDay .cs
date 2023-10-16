@@ -16,7 +16,7 @@ namespace LeituraXmlConsole.utils
         public List<Break> Breaks { get; set; } = new List<Break>();
         public override string ToString()
         {
-            string parseString = string.Join("\n",Breaks.Select(x => x.ToString()));
+            string parseString = string.Join("\n", Breaks.Select(x => x.ToString()));
             return parseString;
         }
         public void ReadScheduleDay(string path, DateTime date)
@@ -34,7 +34,60 @@ namespace LeituraXmlConsole.utils
                 ParseJson(pathJson);
             }
         }
+        public string ListFolders(int num)
+        {
+            if (num == 1)
+            {
+                return "Comerciais";
+            }
+            else if (num == 2)
+            {
+                return "Musicas";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+        public string PrintByFolder(int num)
+        {
+            string folder = ListFolders(num);
+            string parseString = "";
+            foreach (var item in Breaks) { 
+                parseString += item.PrintByFolder(folder)+"\n";
+            }
+            return parseString;
+        }
+        public string PrintByType(int num) {
+            string parseString = "";
+            foreach (var item in Breaks)
+            {
+                int type = int.Parse(item.Type);
+                if (type == num)
+                {
+                    parseString += item.ToString() + "\n";
+                }
+            }
+            return parseString;
+        }
+        public string PrintByTime(string hora, int horastotais) {
+            int horario = int.Parse(hora.Split(':')[0]) * 60;
+            horario += int.Parse(hora.Split(':')[1]);
+            string parseString = "";
+            foreach (var Break in Breaks)
+            {
+                int Orig = TransformOrigInMinutes(Break.Orig);
+                if (Orig >= horario && Orig< horario + horastotais*60)
+                {
+                    
+                }
+            }
+            return parseString;
+        }
 
+        public int TransformOrigInMinutes(string Orig) {
+            return int.Parse(Orig.Split(':')[0]) * 60 + int.Parse(Orig.Split(':')[1]);
+        }
         private void ParseJson(string path)
         {
             string nameJson = $@"{date.ToString("dd-MM-yyyy")}.json";
@@ -58,16 +111,8 @@ namespace LeituraXmlConsole.utils
             }
             string fullPath = @path;
             fullPath += @"\Montagem";
-            int day, month, year;
-            if ((int.TryParse(datePath.Split('-')[0], out day) && int.TryParse(datePath.Split('-')[1], out month) && int.TryParse(datePath.Split('-')[2], out year)))
-            {
-                string filename = @"\" + $"{datePath}" + ".zip";
-                fullPath += filename + "%" + @$"{datePath}.xml";
-            }
-            else
-            {
-                return null;
-            }
+            string filename = @"\" + $"{datePath}" + ".zip";
+            fullPath += filename + "%" + @$"{datePath}.xml";  
             return fullPath;
         }
         XmlDocument xmlDocument = new XmlDocument();

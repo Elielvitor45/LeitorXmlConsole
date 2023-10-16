@@ -23,6 +23,7 @@ namespace LeituraXmlConsole.utils
                 typeof(Break).GetProperty(attributeName).SetValue(this, attributeValue);
             }
             ReadInsertions(Break);
+            Orig = Orig.Split(' ')[0];
             this.Name = Break.Name;
         }
         private void ReadInsertions(XmlNode list)
@@ -40,7 +41,6 @@ namespace LeituraXmlConsole.utils
         public override string ToString()
         {
             string insertionsString = string.Join(", ", Insertions.Select(x => x.ToString()));
-
             return $"Name: {Name}, " +
                    $"Ins: {Ins}, " +
                    $"Insertions: [{insertionsString}], " +
@@ -49,7 +49,39 @@ namespace LeituraXmlConsole.utils
                    $"Filetime: {Filetime}, " +
                    $"Filetime2: {Filetime2}, " +
                    $"Time: {Time}, " +
-                   $"Type: {Type}, " +
+                   $"Type: {Type} , " +
+                   $"Id: {Id}, " +
+                   $"Id_Edited: {Id_Edited}, " +
+                   $"Fixo: {Fixo}, " +
+                   $"Descarte: {Descarte}, " +
+                   $"Net: {Net}, " +
+                   $"Dur: {Dur}, " +
+                   $"Slots: {Slots}, " +
+                   $"Orig: {Orig}\n\n";
+        }
+        public string PrintByFolder(string folder)
+        {
+            string insertionsString = "";
+            foreach (var item in Insertions)
+            {
+                if (item.Folder.Equals(folder))
+                {
+                    insertionsString += item.ToString()+"\n";
+                }
+            }
+            if (string.IsNullOrEmpty(insertionsString))
+            {
+                return "";
+            }
+            return $"Name: {Name}, " +
+                   $"Ins: {Ins}, " +
+                   $"Insertions: [{insertionsString}], " +
+                   $"Locked: {Locked}, " +
+                   $"Changed: {Changed}, " +
+                   $"Filetime: {Filetime}, " +
+                   $"Filetime2: {Filetime2}, " +
+                   $"Time: {Time}, " +
+                   $"Type: {Type} , " +
                    $"Id: {Id}, " +
                    $"Id_Edited: {Id_Edited}, " +
                    $"Fixo: {Fixo}, " +
