@@ -79,7 +79,7 @@ namespace LeituraXmlConsole.utils
                 int Orig = TransformOrigInMinutes(Break.Orig);
                 if (Orig >= horario && Orig< horario + horastotais*60)
                 {
-                    
+                    parseString += Break.ToString() + "\n";
                 }
             }
             return parseString;
