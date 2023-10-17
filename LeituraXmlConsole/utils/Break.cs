@@ -64,7 +64,7 @@ namespace LeituraXmlConsole.utils
             string insertionsString = "";
             foreach (var item in Insertions)
             {
-                if (item.Folder.Equals(folder))
+                if (item.Source.Equals(folder))
                 {
                     insertionsString += item.ToString()+"\n";
                 }

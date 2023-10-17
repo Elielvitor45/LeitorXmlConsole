@@ -29,7 +29,7 @@ namespace LeituraXmlConsole
                 Console.WriteLine("Xml para Json(3): ");
                 Console.WriteLine("Carregar outro montagem.xml(4)");
                 Console.WriteLine("Imprimir apenas um tipo de bloco(5): ");
-                Console.WriteLine("Imprimir em relacao as pastas(6):");
+                Console.WriteLine("Imprimir Musical ou Comercial(6):");
                 Console.WriteLine("Sair(0)");
                 condicion = int.Parse(Console.ReadLine());
 
