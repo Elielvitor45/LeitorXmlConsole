@@ -20,11 +20,48 @@ namespace LeituraXmlConsole.utils
                 {
                     attributeValue = "";
                 }
-                typeof(Break).GetProperty(attributeName).SetValue(this, attributeValue);
+                typeof(Break).GetProperty(attributeName)
+                             .SetValue(this, attributeValue);
             }
             ReadInsertions(Break);
             Orig = Orig.Split(' ')[0];
             this.Name = Break.Name;
+        }
+        //Pega o tipo das insercoes e cria uma lista
+        public Dictionary<string,int> InsercionsType()
+        {
+            Dictionary<string, int> type = new Dictionary<string, int>();
+            foreach (var item in Insertions)
+            {
+                if (!string.IsNullOrEmpty(item.Type))
+                {
+                    type[item.Type] = +1;
+                }
+            }
+            return type;
+        }
+        //pega as insercoes com erro
+        public string InsercionsErr()
+        {
+            string insertionsErr = $"Inserções com Erro do Break de {Orig.Split(" ")[0]}: \n";
+            bool confirm = false;
+            foreach (var item in Insertions)
+            {
+                if (int.Parse(item.Err) != 0)
+                {
+                    confirm = true;
+                    insertionsErr += " - "+item.sErr+"\n";
+                    if (string.IsNullOrEmpty(item.sErr))
+                    {
+                        confirm = false;
+                    }
+                }
+            }
+            if (confirm == false)
+            {
+                return "";
+            }
+            return insertionsErr;
         }
         private void ReadInsertions(XmlNode list)
         {

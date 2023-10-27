@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -34,15 +36,70 @@ namespace LeituraXmlConsole.utils
                 ParseJson(pathJson);
             }
         }
-        public string ListFolders(int num)
+        public string ParseDictionaryatString(Dictionary<string,int> Insertions) {
+            return Insertions.Select(kvp =>
+            $"Tipo da Inserção: {kvp.Key}, Quantidade: {kvp.Value}")
+            .Aggregate((x, y) => x + "\n" + y);
+        }
+        public Dictionary<string,int> MointInsercionsSummary() {
+            Dictionary<string,int> InsertionsType = new Dictionary<string,int>();
+            foreach (Break item in Breaks)
+            {
+                if (InsertionsType.Count == 0)
+                {
+                    InsertionsType = item.InsercionsType();
+                }
+                else
+                {
+                    var temp = item.InsercionsType();
+                    foreach (var kvp in temp) {
+                        if (InsertionsType.ContainsKey(kvp.Key))
+                        {
+                                InsertionsType[kvp.Key] += kvp.Value;
+                        }
+                        else
+                        {
+                            InsertionsType[kvp.Key] = kvp.Value;
+                        }
+                    }
+                }
+            }
+            return InsertionsType;
+        }
+        public string ProgrammingSummary() {
+            string program = $"Resumo da Programacao do dia {date.ToString("dd-MM-yyyy")}\n";
+            bool erros = false;
+            if (Breaks != null)
+            {
+                program += "Insercoes com Erro-------------------------------------------------------------\n";
+                foreach (Break item in Breaks)
+                {
+                    if (!string.IsNullOrEmpty(item.InsercionsErr()))
+                    {
+                        program += item.InsercionsErr()+"\n";
+                    }
+                }
+                if (erros == false)
+                {
+                    program += $"Não existe nenhuma inserção com erro na Programação do Dia {date.ToString("dd-MM-yyyy")}\n ";
+                }
+                program += "------------------------------------------------------------------------------\n\n\n";
+            }
+            program += "Tipo de Insercoes--------------------------------------------------------------\n";
+            program += ParseDictionaryatString(MointInsercionsSummary())+ "\n";
+            program += "-------------------------------------------------------------------------------\n";
+
+            return program;
+        }    
+        public string ListSource(int num)
         {
             if (num == 1)
             {
-                return "Comerciais";
+                return "C";
             }
             else if (num == 2)
             {
-                return "Musicas";
+                return "M";
             }
             else
             {
@@ -51,10 +108,10 @@ namespace LeituraXmlConsole.utils
         }
         public string PrintByFolder(int num)
         {
-            string folder = ListFolders(num);
+            string Source = ListSource(num);
             string parseString = "";
             foreach (var item in Breaks) { 
-                parseString += item.PrintByFolder(folder)+"\n";
+                parseString += item.PrintByFolder(Source)+"\n";
             }
             return parseString;
         }

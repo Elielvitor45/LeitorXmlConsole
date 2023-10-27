@@ -30,6 +30,7 @@ namespace LeituraXmlConsole
                 Console.WriteLine("Carregar outro montagem.xml(4)");
                 Console.WriteLine("Imprimir apenas um tipo de bloco(5): ");
                 Console.WriteLine("Imprimir Musical ou Comercial(6):");
+                Console.WriteLine("Imprimir Resumo da programacao(7)");
                 Console.WriteLine("Sair(0)");
                 condicion = int.Parse(Console.ReadLine());
 
@@ -115,6 +116,20 @@ namespace LeituraXmlConsole
                         date = DateTime.Parse(dateS);
                         scheduleDay.ReadScheduleDay(path, date);
                         Console.WriteLine(scheduleDay.PrintByFolder(num));
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Data Invalida!");
+                    }
+                }
+                else if (condicion == 7)
+                {
+                    if (DataVerify(dateS))
+                    {
+                        date = DateTime.Parse(dateS);
+                        scheduleDay.ReadScheduleDay(path, date);
+                        Console.WriteLine(scheduleDay.ProgrammingSummary());
                         Console.ReadKey();
                     }
                     else
