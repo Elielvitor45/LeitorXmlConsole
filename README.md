@@ -32,8 +32,8 @@ Caso queira contribuir, siga os seguintes passos:
 1. Clone este repositório:
 
    ```shell
-   git clone https://github.com/seu-usuario/LeitorXML
-   cd LeitorXML
+   git clone https://github.com/seu-usuario/LeitorXmlConsole
+   cd LeitorXmlConsole
 2.  Abra o projeto no Visual Studio ou em sua IDE de preferência.
     
 3.  Compile o projeto.
